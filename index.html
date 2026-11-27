@@ -334,6 +334,12 @@ body.pagina-admin main>section:not(#admin-resgates){display:none}
 .st-pago{background:rgba(62,230,160,.14);color:#3ee6a0}
 .st-recusado{background:rgba(255,138,154,.14);color:#ff8a9a}
 .ad-aviso{background:var(--fundo-elevado);border:1px solid var(--roxo-sombra);padding:24px;max-width:560px;color:var(--texto-suave)}
+
+/* subitens do menu: setinha para a direita no lugar das linhas */
+.sub>ul{border-left:none}
+.sub a{padding-left:24px}
+.sub a::before{left:6px;top:50%;width:6px;height:6px;background:none;border-right:2px solid var(--texto-suave);border-top:2px solid var(--texto-suave);transform:translateY(-50%) rotate(45deg);transition:border-color .2s,left .2s}
+.sub a:hover::before{width:6px;background:none;border-color:var(--magenta);left:8px}
 </style>
 </head>
 <body>
