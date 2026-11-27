@@ -1,0 +1,29 @@
+# Configuração do site bnhsz.com.br na Fly.io
+app = "bnhsz-site"
+primary_region = "iad"   # Virgínia (EUA)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"    # desliga sozinha quando ninguém está acessando (economiza)
+  auto_start_machines = true     # liga sozinha quando alguém entra no site
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    path = "/saude"
+    timeout = "5s"
+
+[[vm]]
+  size = "shared-cpu-1x"         # a máquina mais barata
+  memory = "256mb"
+
+# Volume (disco) de 1 GB, o menor possível, guardado para uso futuro
+[mounts]
+  source = "bnhsz_dados"
+  destination = "/data"
