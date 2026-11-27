@@ -664,7 +664,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           <div class="mm-info" id="mm-info"></div>
           <div class="mm-pop" id="mm-pop"><header><span id="mm-pop-tit">Monstros aqui</span><button type="button" id="mm-pop-x" aria-label="Fechar">&times;</button></header><div class="mm-lista" id="mm-pop-lista"></div></div>
         </div>
-        <p class="mm-dica">Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
+        <p class="mm-dica">Os monstros aparecem no mapa quando você dá zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
         <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens: TibiaWiki.</p>
       </div>
     </div>
@@ -1058,36 +1058,28 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       var o=mapaParaTela(X0,Y0);
       ctx.drawImage(im,o[0],o[1],W*escala,H*escala);
     }else{carregando.style.display='grid'}
-    if(sel&&dados.m[sel]){
-      var areas=dados.m[sel];
+    if(dados){
       ctx.save();
-      areas.forEach(function(a,i){
-        if(a[2]!==andar)return;
-        var destaque=i===areaSel;
-        var p1=mapaParaTela(a[4]-2,a[5]-2),p2=mapaParaTela(a[6]+3,a[7]+3);
-        var w=p2[0]-p1[0],h=p2[1]-p1[1];
-        if(escala>=2){
-          // cada monstro como um ponto
-          ctx.strokeStyle=destaque?'rgba(231,166,255,.9)':'rgba(193,60,255,.55)';ctx.lineWidth=destaque?2:1;ctx.setLineDash([4,3]);
-          ctx.strokeRect(p1[0],p1[1],w,h);ctx.setLineDash([]);
-          var f=a[8],r=Math.max(3.5,escala*0.45);
-          for(var k=0;k<f.length;k+=2){
-            var t=mapaParaTela(a[4]+f[k]+.5,a[5]+f[k+1]+.5);
-            ctx.beginPath();ctx.arc(t[0],t[1],r,0,6.283);ctx.fillStyle='#c13cff';ctx.fill();
-            ctx.lineWidth=1.5;ctx.strokeStyle='#fff';ctx.stroke();
-          }
-        }else{
-          // área inteira + bolinha com a quantidade
-          ctx.fillStyle=destaque?'rgba(193,60,255,.35)':'rgba(193,60,255,.2)';ctx.fillRect(p1[0],p1[1],w,h);
-          ctx.strokeStyle=destaque?'#e7a6ff':'rgba(193,60,255,.8)';ctx.lineWidth=destaque?2:1;ctx.strokeRect(p1[0],p1[1],w,h);
-          var c=mapaParaTela(a[0],a[1]),txt=String(a[3]);
-          ctx.font='800 11px Montserrat,system-ui,sans-serif';
-          var rr=Math.max(10,ctx.measureText(txt).width/2+6);
-          ctx.beginPath();ctx.arc(c[0],c[1],rr,0,6.283);ctx.fillStyle=destaque?'#c13cff':'#8700ff';ctx.fill();
-          ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();
-          ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(txt,c[0],c[1]+.5);
-        }
-      });
+      var vx0=telaParaMapa(-60,-60),vx1=telaParaMapa(larg+60,alt+60);
+      var visivel=function(a){return !(a[6]<vx0[0]||a[4]>vx1[0]||a[7]<vx0[1]||a[5]>vx1[1])};
+      if(sel&&dados.m[sel]){
+        dados.m[sel].forEach(function(a,i){
+          if(a[2]!==andar||!visivel(a))return;
+          var destaque=i===areaSel;
+          var p1=mapaParaTela(a[4]-2,a[5]-2),p2=mapaParaTela(a[6]+3,a[7]+3);
+          ctx.fillStyle=destaque?'rgba(193,60,255,.22)':'rgba(193,60,255,.12)';ctx.fillRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);
+          ctx.strokeStyle=destaque?'#e7a6ff':'rgba(193,60,255,.75)';ctx.lineWidth=destaque?2:1;ctx.setLineDash([5,4]);
+          ctx.strokeRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);ctx.setLineDash([]);
+          if(escala>=2)cadaMonstro(sel,a,Math.max(26,Math.min(60,escala*2.6)),true);
+          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(sel,c[0],c[1],34,a[3],true)}
+        });
+      }else if(escala>=1.5){
+        (porAndar[andar]||[]).forEach(function(r){
+          var a=r[1];if(!visivel(a))return;
+          if(escala>=6)cadaMonstro(r[0],a,Math.max(24,Math.min(52,escala*2.4)),false);
+          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(r[0],c[0],c[1],escala>=3?30:24,a[3],false)}
+        });
+      }
       ctx.restore();
     }
     if(mira&&mira[2]===andar){
@@ -1101,8 +1093,40 @@ body.pagina-extra main>section.pagina.ativa{display:block}
     if(sel){
       var n=0;dados.m[sel].forEach(function(a){if(a[2]===andar)n+=a[3]});
       h+='<span><b>'+esc(sel)+'</b>: '+(n?fmt(n)+' neste andar':'nenhum neste andar')+'</span>';
-    }
+    }else if(dados&&escala<1.5)h+='<span>Dê zoom pra ver os monstros</span>';
     info.innerHTML=h;
+  }
+
+  // ---------- sprites dos monstros no mapa ----------
+  var sprs={},porAndar={};
+  function spr(n){
+    if(sprs[n])return sprs[n];
+    var im=new Image();im.referrerPolicy='no-referrer';im.decoding='async';
+    var u=gifUrl(n);im.onload=function(){desenhar()};im.onerror=function(){im.falhou=true;desenhar()};
+    if(u)im.src=u;else im.falhou=true;
+    sprs[n]=im;return im;
+  }
+  function bolinha(x,y,r,cor){ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fillStyle=cor;ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle='#fff';ctx.stroke()}
+  function sprite(n,x,y,tam,qtd,destaque){
+    var im=spr(n),ok=im.complete&&im.naturalWidth&&!im.falhou;
+    if(ok){
+      var f=Math.min(1.5,Math.max(1,im.naturalWidth/32)),w=tam*f,h=tam*f*im.naturalHeight/im.naturalWidth;
+      if(destaque){ctx.save();ctx.shadowColor='rgba(193,60,255,.95)';ctx.shadowBlur=10}
+      ctx.imageSmoothingEnabled=false;
+      ctx.drawImage(im,x-w/2,y-h/2,w,h);
+      if(destaque)ctx.restore();
+    }else bolinha(x,y,Math.max(5,tam/5),destaque?'#c13cff':'#8700ff');
+    if(qtd>1){
+      var t=String(qtd);ctx.font='800 10.5px Montserrat,system-ui,sans-serif';
+      var bw=Math.max(16,ctx.measureText(t).width+8),bx=x+tam*.32,by=y+tam*.28;
+      ctx.fillStyle=destaque?'#c13cff':'#8700ff';ctx.fillRect(bx-bw/2,by-8,bw,16);
+      ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(bx-bw/2+.5,by-7.5,bw-1,15);
+      ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(t,bx,by+.5);
+    }
+  }
+  function cadaMonstro(n,a,tam,destaque){
+    var f=a[8];
+    for(var k=0;k<f.length;k+=2){var t=mapaParaTela(a[4]+f[k]+.5,a[5]+f[k+1]+.5);sprite(n,t[0],t[1],tam,0,destaque)}
   }
 
   // ---------- andares ----------
@@ -1245,7 +1269,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
     if(iniciado)return;iniciado=true;
     montarAndares();imgAndar(andar);
     fetch('mapa/monstros.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-      dados=d;nomes=Object.keys(d.m).sort(function(a,b){return a.localeCompare(b)});
+      dados=d;nomes=Object.keys(d.m).filter(function(n){return /^[A-Z]/.test(n)}).sort(function(a,b){return a.localeCompare(b)});nomes.forEach(function(n){d.m[n].forEach(function(ar){(porAndar[ar[2]]=porAndar[ar[2]]||[]).push([n,ar])})});
       montarLista();desenhar();
     }).catch(function(){lista.innerHTML='<p class="mm-vazio">Não deu pra carregar a lista de monstros. Atualize a página.</p>'});
   }
