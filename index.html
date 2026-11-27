@@ -645,7 +645,7 @@ body.pagina-admin main>section:not(#admin-resgates){display:none}
   $('sair').addEventListener('click',sair);$('mc-sair').addEventListener('click',sair);
 
   function mostrarDeslogado(){
-    dentro.hidden=true;fora.hidden=false;mcDentro.hidden=true;mcFora.hidden=false;usuario=null;admin=false;$('lat-admin').hidden=true;$('mc-admin').hidden=true;$('ad-aviso').textContent='Entre com a conta da Twitch do BNH pra ver os pedidos.';$('ad-aviso').hidden=false;$('ad-painel').hidden=true;
+    dentro.hidden=true;fora.hidden=false;mcDentro.hidden=true;mcFora.hidden=false;usuario=null;$('mc-foto-msg').textContent='';admin=false;$('lat-admin').hidden=true;$('mc-admin').hidden=true;$('ad-aviso').textContent='Entre com a conta da Twitch do BNH pra ver os pedidos.';$('ad-aviso').hidden=false;$('ad-painel').hidden=true;
     botoesEntrar.forEach(function(b){b.disabled=false});
   }
 
@@ -681,7 +681,7 @@ body.pagina-admin main>section:not(#admin-resgates){display:none}
 
   var usuario=null,admin=false,saldoRubini=0;
   function mostrarLogado(sessao){
-    var u=sessao.user,md=u.user_metadata||{};usuario=u;
+    var u=sessao.user,md=u.user_metadata||{};usuario=u;$('mc-foto-msg').textContent='';
     preencher(md.nickname||md.slug||md.name||'viewer',md.name||'',md.avatar_url||md.picture||'',0,0);
     fora.hidden=true;dentro.hidden=false;mcFora.hidden=true;mcDentro.hidden=false;
     sb.from('perfis').select('nome,twitch_login,foto_url,points,rubini_coins').eq('id',u.id).maybeSingle().then(function(r){
@@ -697,7 +697,7 @@ body.pagina-admin main>section:not(#admin-resgates){display:none}
 
   // ===== trocar a foto de perfil =====
   var arquivo=$('mc-arquivo'),fotoMsg=$('mc-foto-msg');
-  function msgFoto(t,tipo){fotoMsg.textContent=t||'';fotoMsg.className='mc-msg'+(tipo?' '+tipo:'')}
+  var fotoTimer;function msgFoto(t,tipo){clearTimeout(fotoTimer);fotoMsg.textContent=t||'';fotoMsg.className='mc-msg'+(tipo?' '+tipo:'');if(tipo==='ok')fotoTimer=setTimeout(function(){fotoMsg.textContent=''},4000)}
   $('mc-trocar-foto').addEventListener('click',function(){arquivo.click()});
   function quadrado(file){
     return new Promise(function(ok,falha){
