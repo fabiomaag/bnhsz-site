@@ -275,6 +275,65 @@ body.pagina-conta main>section:not(#minha-conta){display:none}
 .mc-extrato li.vazio{color:var(--texto-suave);display:block}
 .mc-futuro{color:var(--texto-suave);font-size:14.5px;margin-bottom:28px}
 .mc-futuro .tag{margin:0 8px 0 0}
+/* ===== foto de perfil, resgate e admin ===== */
+.mc-foto-box{position:relative;width:76px;height:76px;flex:none}
+.mc-foto-vazia{width:76px;height:76px;display:grid;place-items:center;border:3px solid var(--magenta);background:var(--roxo-profundo);font:400 34px var(--f-titulo);box-shadow:0 0 22px rgba(193,60,255,.45)}
+.mc-foto-vazia[hidden]{display:none}
+.mc-foto-acoes{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:10px}
+.mc-link{background:none;border:none;padding:0;color:var(--magenta-brilho);font:700 12.5px var(--f-texto);text-transform:uppercase;letter-spacing:.06em;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.mc-link:hover{color:#fff}
+.mc-link:disabled{opacity:.5;cursor:default}
+.mc-link[hidden]{display:none}
+.mc-msg{font-size:13px;color:var(--texto-suave);margin-top:6px;min-height:0}
+.mc-msg.erro{color:#ff8a9a}.mc-msg.ok{color:#3ee6a0}
+.mc-saldo>div{flex:1;min-width:0}
+.btn-verde{background:linear-gradient(180deg,#22c46e,#139452);color:#fff;box-shadow:0 0 16px rgba(34,196,110,.35)}
+.btn-verde:disabled{filter:grayscale(.6);opacity:.6;cursor:default;transform:none}
+.mc-resgatar{flex:none;padding:12px 18px;font-size:13px}
+@media (max-width:420px){.mc-saldo.rubini{flex-wrap:wrap}.mc-resgatar{width:100%;justify-content:center}}
+.janela{margin:auto;border:1px solid var(--roxo);background:var(--fundo-elevado);color:var(--branco);padding:0;width:min(440px,calc(100vw - 32px));box-shadow:0 0 40px rgba(135,0,255,.45)}
+.janela::backdrop{background:rgba(10,4,14,.78)}
+.janela form{padding:26px 22px 22px}
+.janela h3{font-family:var(--f-titulo);font-weight:400;text-transform:uppercase;font-size:32px;line-height:1;margin-bottom:6px}
+.janela .rj-sub{color:var(--texto-suave);font-size:14px;margin-bottom:18px}
+.janela .rj-sub b{display:inline;color:#fff}
+.janela label{display:block;font:800 11px var(--f-texto);letter-spacing:.14em;text-transform:uppercase;color:var(--magenta-brilho);margin:14px 0 6px}
+.janela input{width:100%;padding:12px 14px;background:var(--fundo);border:1px solid var(--roxo-sombra);color:#fff;font:600 16px var(--f-texto)}
+.janela input:focus{outline:2px solid var(--roxo);outline-offset:0;border-color:var(--roxo)}
+.janela .dica{font-size:12.5px;color:var(--texto-suave);margin-top:6px}
+.janela .botoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.janela .botoes .btn{flex:1;justify-content:center}
+.janela .ok-box{text-align:center;padding:8px 0}
+.janela .ok-box b{display:block;font-family:var(--f-titulo);font-weight:400;font-size:30px;text-transform:uppercase;color:#3ee6a0;margin-bottom:8px}
+.janela .ok-box p{color:var(--texto-suave);margin-bottom:18px}
+.bt-admin{background:linear-gradient(180deg,#22c46e,#139452)!important;border-color:#2fd47e!important;color:#fff!important}
+.bt-admin[hidden]{display:none!important}
+#admin-resgates{display:none;padding:72px 0 88px}
+body.pagina-admin #admin-resgates{display:block}
+body.pagina-admin main>section:not(#admin-resgates){display:none}
+.ad-resumo{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:24px}
+.ad-resumo div{background:var(--fundo-elevado);border:1px solid var(--roxo-sombra);padding:16px 20px;min-width:180px}
+.ad-resumo small{display:block;font:800 11px var(--f-texto);letter-spacing:.14em;text-transform:uppercase;color:var(--magenta-brilho)}
+.ad-resumo b{display:block;font-family:var(--f-titulo);font-weight:400;font-size:34px;line-height:1.1}
+.ad-filtros{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.ad-filtros button{padding:8px 14px;background:none;border:1px solid var(--roxo-sombra);color:var(--texto-suave);font:700 12px var(--f-texto);text-transform:uppercase;letter-spacing:.06em;cursor:pointer}
+.ad-filtros button[aria-pressed="true"]{background:var(--roxo);border-color:var(--roxo);color:#fff}
+.ad-lista{list-style:none;margin:0;padding:0;border-top:1px solid var(--roxo-sombra)}
+.ad-lista li{display:grid;grid-template-columns:1fr auto;gap:10px 16px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--roxo-sombra)}
+.ad-lista li.vazio{display:block;color:var(--texto-suave)}
+.ad-pers{font-weight:800;font-size:16px}
+.ad-pers button{margin-left:8px;vertical-align:1px}
+.ad-info{display:block;color:var(--texto-suave);font-size:12.5px;margin-top:3px}
+.ad-qtd{font-family:var(--f-titulo);font-size:24px;white-space:nowrap;text-align:right}
+.ad-qtd small{display:block;font:700 10.5px var(--f-texto);letter-spacing:.1em;text-transform:uppercase;color:var(--texto-suave)}
+.ad-acoes{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ad-acoes .btn{padding:9px 16px;font-size:12px}
+.btn-vermelho{background:linear-gradient(180deg,#b8343f,#8c1f2a);color:#fff}
+.st{display:inline-block;padding:3px 9px;font:800 10.5px var(--f-texto);text-transform:uppercase;letter-spacing:.1em}
+.st-pendente{background:rgba(255,196,0,.15);color:#ffd166}
+.st-pago{background:rgba(62,230,160,.14);color:#3ee6a0}
+.st-recusado{background:rgba(255,138,154,.14);color:#ff8a9a}
+.ad-aviso{background:var(--fundo-elevado);border:1px solid var(--roxo-sombra);padding:24px;max-width:560px;color:var(--texto-suave)}
 </style>
 </head>
 <body>
@@ -291,7 +350,7 @@ body.pagina-conta main>section:not(#minha-conta){display:none}
           </div>
     <div class="conta-dentro" hidden>
       <p class="logado"><img class="avatar-mini" id="conta-foto" alt="" hidden>Logado como <b id="conta-nome">viewer</b></p>
-      <div class="conta-acoes"><a class="bt-conta" href="#minha-conta">Minha conta</a><button class="bt-sair" type="button" id="sair"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/></svg>Sair</button></div>
+      <div class="conta-acoes"><a class="bt-conta" href="#minha-conta">Minha conta</a><a class="bt-admin" href="#admin-resgates" id="lat-admin" hidden>Resgates (admin)</a><button class="bt-sair" type="button" id="sair"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/></svg>Sair</button></div>
     </div>
   </div>
   <a class="lat-live" href="https://www.twitch.tv/bnhsz" target="_blank" rel="noopener"><span class="dot">Canal bnhsz</span><b>Assistir na Twitch</b></a>
@@ -325,15 +384,27 @@ body.pagina-conta main>section:not(#minha-conta){display:none}
       <button class="btn btn-roxo" type="button" data-entrar>Entrar com a Twitch</button>
     </div>
     <div id="mc-dentro" hidden>
-      <div class="mc-perfil"><img id="mc-foto" alt="Sua foto da Twitch" width="76" height="76" hidden><div><b id="mc-nome">viewer</b><small id="mc-login"></small></div></div>
+      <div class="mc-perfil"><div class="mc-foto-box"><img id="mc-foto" alt="Sua foto de perfil" width="76" height="76" hidden><span class="mc-foto-vazia" id="mc-foto-vazia" aria-hidden="true">?</span></div><div><b id="mc-nome">viewer</b><small id="mc-login"></small><div class="mc-foto-acoes"><button class="mc-link" type="button" id="mc-trocar-foto">Trocar foto</button><button class="mc-link" type="button" id="mc-foto-twitch" hidden>Usar a foto da Twitch</button></div><input type="file" id="mc-arquivo" accept="image/jpeg,image/png,image/webp" hidden><p class="mc-msg" id="mc-foto-msg" role="status"></p></div></div>
       <div class="mc-saldos">
         <article class="mc-saldo"><span class="moeda" aria-hidden="true">P</span><div><small>Points</small><b id="mc-points">0</b><p>Ganhos assistindo as lives</p></div></article>
-        <article class="mc-saldo rubini"><span class="moeda" aria-hidden="true">R</span><div><small>Rubini Coins</small><b id="mc-rubini">0</b><p>A moeda do servidor</p></div></article>
+        <article class="mc-saldo rubini"><span class="moeda" aria-hidden="true">R</span><div><small>Rubini Coins</small><b id="mc-rubini">0</b><p>Resgate quando quiser</p></div><button class="btn btn-verde mc-resgatar" type="button" id="mc-resgatar">Resgatar</button></article>
       </div>
       <h3 class="mc-sub">Extrato</h3>
       <ul class="mc-extrato" id="mc-extrato"><li class="vazio">Nada por aqui ainda. Quando as recompensas começarem, tudo que você ganhar e gastar aparece nesta lista.</li></ul>
       <p class="mc-futuro"><span class="tag">Em breve</span>Loja, sorteios e outras coisas da sua conta vão aparecer aqui.</p>
+      <p style="margin-bottom:18px"><a class="btn btn-verde" href="#admin-resgates" id="mc-admin" hidden>Pedidos de resgate (admin)</a></p>
       <button class="btn btn-linha" type="button" id="mc-sair">Sair da conta</button>
+    </div>
+  </div>
+</section>
+<section class="bloco" id="admin-resgates" aria-labelledby="ad-tit">
+  <div class="wrap">
+    <div class="cabeca"><span class="script">Pedidos de</span><h2 class="titulo" id="ad-tit">Resgate</h2><p>Só você vê esta página. Mande as Rubini Coins no jogo e depois marque o pedido como pago.</p></div>
+    <div class="ad-aviso" id="ad-aviso">Carregando…</div>
+    <div id="ad-painel" hidden>
+      <div class="ad-resumo"><div><small>Pendentes</small><b id="ad-n-pend">0</b></div><div><small>Rubini Coins a pagar</small><b id="ad-q-pend">0</b></div><div><small>Já pagas</small><b id="ad-q-pago">0</b></div></div>
+      <div class="ad-filtros" role="group" aria-label="Mostrar"><button type="button" data-filtro="pendente" aria-pressed="true">Pendentes</button><button type="button" data-filtro="pago" aria-pressed="false">Pagos</button><button type="button" data-filtro="recusado" aria-pressed="false">Recusados</button><button type="button" data-filtro="todos" aria-pressed="false">Todos</button><button type="button" id="ad-atualizar" aria-pressed="false">Atualizar</button></div>
+      <ul class="ad-lista" id="ad-lista"></ul>
     </div>
   </div>
 </section>
@@ -501,6 +572,28 @@ body.pagina-conta main>section:not(#minha-conta){display:none}
   else els.forEach(function(el){el.classList.add('on')});
 })();
 </script>
+
+<dialog class="janela" id="resgate-janela" aria-labelledby="rj-tit">
+  <form method="dialog" id="rj-form" novalidate>
+    <div id="rj-pedido">
+      <h3 id="rj-tit">Resgatar Rubini Coins</h3>
+      <p class="rj-sub">Seu saldo: <b id="rj-saldo">0</b> Rubini Coins</p>
+      <label for="rj-personagem">Nome do personagem</label>
+      <input id="rj-personagem" type="text" maxlength="30" autocomplete="off" placeholder="Ex.: Bnh Knight" required>
+      <p class="dica">Escreva igual aparece no jogo.</p>
+      <label for="rj-qtd">Quantas Rubini Coins</label>
+      <input id="rj-qtd" type="number" inputmode="numeric" min="1" step="1" required>
+      <p class="dica">As moedas saem do seu saldo na hora do pedido. Se o pedido for recusado, elas voltam.</p>
+      <p class="mc-msg erro" id="rj-erro" role="alert"></p>
+      <div class="botoes"><button class="btn btn-linha" type="button" id="rj-cancelar">Cancelar</button><button class="btn btn-verde" type="submit" id="rj-enviar">Pedir resgate</button></div>
+    </div>
+    <div class="ok-box" id="rj-ok" hidden>
+      <b>Pedido enviado!</b>
+      <p id="rj-ok-txt"></p>
+      <button class="btn btn-roxo" type="button" id="rj-fechar">Fechar</button>
+    </div>
+  </form>
+</dialog>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 (function(){
@@ -518,7 +611,7 @@ body.pagina-conta main>section:not(#minha-conta){display:none}
   function mostrarErro(t){erro.textContent=t;erro.hidden=!t}
 
   // "Minha conta" funciona como uma página separada
-  function rota(){var on=location.hash==='#minha-conta';document.body.classList.toggle('pagina-conta',on);if(on)window.scrollTo(0,0)}
+  function rota(){var on=location.hash==='#minha-conta',ad=location.hash==='#admin-resgates';document.body.classList.toggle('pagina-conta',on);document.body.classList.toggle('pagina-admin',ad);if(on||ad)window.scrollTo(0,0);if(ad&&window.bnhAbrirAdmin)window.bnhAbrirAdmin()}
   window.addEventListener('hashchange',rota);rota();
 
   var configurado=/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL)&&SUPABASE_KEY.indexOf('COLE_')!==0;
@@ -548,20 +641,25 @@ body.pagina-conta main>section:not(#minha-conta){display:none}
   }
   botoesEntrar.forEach(function(b){b.addEventListener('click',login)});
 
-  function sair(){sb.auth.signOut().finally(function(){mostrarDeslogado();if(location.hash==='#minha-conta')location.hash='#inicio'})}
+  function sair(){sb.auth.signOut().finally(function(){mostrarDeslogado();if(location.hash==='#minha-conta'||location.hash==='#admin-resgates')location.hash='#inicio'})}
   $('sair').addEventListener('click',sair);$('mc-sair').addEventListener('click',sair);
 
   function mostrarDeslogado(){
-    dentro.hidden=true;fora.hidden=false;mcDentro.hidden=true;mcFora.hidden=false;
+    dentro.hidden=true;fora.hidden=false;mcDentro.hidden=true;mcFora.hidden=false;usuario=null;admin=false;$('lat-admin').hidden=true;$('mc-admin').hidden=true;$('ad-aviso').textContent='Entre com a conta da Twitch do BNH pra ver os pedidos.';$('ad-aviso').hidden=false;$('ad-painel').hidden=true;
     botoesEntrar.forEach(function(b){b.disabled=false});
   }
 
   function preencher(nome,login,foto,points,rubini){
     $('conta-nome').textContent=nome;$('mc-nome').textContent=nome;
     $('mc-login').textContent=login?'twitch.tv/'+login:'';
+    mostrarFoto(foto);
+    $('mc-points').textContent=fmt(points);saldoRubini=Number(rubini)||0;$('mc-rubini').textContent=fmt(saldoRubini);
+  }
+  function mostrarFoto(foto){
     if(foto){$('conta-foto').src=foto;$('mc-foto').src=foto}
-    $('conta-foto').hidden=!foto;$('mc-foto').hidden=!foto;
-    $('mc-points').textContent=fmt(points);$('mc-rubini').textContent=fmt(rubini);
+    $('conta-foto').hidden=!foto;$('mc-foto').hidden=!foto;$('mc-foto-vazia').hidden=!!foto;
+    $('mc-foto-vazia').textContent=($('mc-nome').textContent||'?').charAt(0).toUpperCase();
+    $('mc-foto-twitch').hidden=!(foto&&foto.indexOf('/storage/v1/object/public/avatares/')>-1);
   }
 
   var NOMES={points:'Points',rubini_coins:'Rubini Coins'};
@@ -581,15 +679,162 @@ body.pagina-conta main>section:not(#minha-conta){display:none}
     });
   }
 
+  var usuario=null,admin=false,saldoRubini=0;
   function mostrarLogado(sessao){
-    var u=sessao.user,md=u.user_metadata||{};
+    var u=sessao.user,md=u.user_metadata||{};usuario=u;
     preencher(md.nickname||md.slug||md.name||'viewer',md.name||'',md.avatar_url||md.picture||'',0,0);
     fora.hidden=true;dentro.hidden=false;mcFora.hidden=true;mcDentro.hidden=false;
     sb.from('perfis').select('nome,twitch_login,foto_url,points,rubini_coins').eq('id',u.id).maybeSingle().then(function(r){
       if(r.data){var p=r.data;preencher(p.nome||$('mc-nome').textContent,p.twitch_login||md.name||'',p.foto_url||md.avatar_url||'',p.points,p.rubini_coins)}
     });
+    sb.rpc('sou_admin').then(function(r){
+      admin=r.data===true;$('lat-admin').hidden=!admin;$('mc-admin').hidden=!admin;
+      if(location.hash==='#admin-resgates')abrirAdmin();
+    });
     sb.from('extrato').select('moeda,quantidade,motivo,criado_em').order('criado_em',{ascending:false}).limit(20).then(function(r){if(r.data)extrato(r.data)});
   }
+
+
+  // ===== trocar a foto de perfil =====
+  var arquivo=$('mc-arquivo'),fotoMsg=$('mc-foto-msg');
+  function msgFoto(t,tipo){fotoMsg.textContent=t||'';fotoMsg.className='mc-msg'+(tipo?' '+tipo:'')}
+  $('mc-trocar-foto').addEventListener('click',function(){arquivo.click()});
+  function quadrado(file){
+    return new Promise(function(ok,falha){
+      var img=new Image(),url=URL.createObjectURL(file);
+      img.onload=function(){
+        var lado=Math.min(img.naturalWidth,img.naturalHeight),t=320,c=document.createElement('canvas');
+        c.width=t;c.height=t;var x=c.getContext('2d');
+        x.drawImage(img,(img.naturalWidth-lado)/2,(img.naturalHeight-lado)/2,lado,lado,0,0,t,t);
+        URL.revokeObjectURL(url);
+        c.toBlob(function(b){b?ok(b):falha()},'image/jpeg',.88);
+      };
+      img.onerror=function(){URL.revokeObjectURL(url);falha()};
+      img.src=url;
+    });
+  }
+  function botoesFoto(on){$('mc-trocar-foto').disabled=!on;$('mc-foto-twitch').disabled=!on}
+  arquivo.addEventListener('change',function(){
+    var f=arquivo.files&&arquivo.files[0];arquivo.value='';
+    if(!f||!usuario)return;
+    if(!/^image\/(jpeg|png|webp)$/.test(f.type)){msgFoto('Use uma imagem JPG, PNG ou WEBP.','erro');return}
+    if(f.size>10*1024*1024){msgFoto('Essa imagem é grande demais (máximo 10 MB).','erro');return}
+    botoesFoto(false);msgFoto('Enviando a foto…');
+    var caminho=usuario.id+'/foto.jpg';
+    quadrado(f).then(function(blob){
+      return sb.storage.from('avatares').upload(caminho,blob,{upsert:true,contentType:'image/jpeg',cacheControl:'3600'});
+    }).then(function(r){
+      if(r.error)throw r.error;
+      var url=sb.storage.from('avatares').getPublicUrl(caminho).data.publicUrl+'?v='+Date.now();
+      return sb.rpc('trocar_foto',{p_url:url});
+    }).then(function(r){
+      if(r.error)throw r.error;
+      mostrarFoto(r.data);msgFoto('Foto trocada!','ok');
+    }).catch(function(){msgFoto('Não deu pra trocar a foto agora. Tente de novo.','erro')})
+    .finally(function(){botoesFoto(true)});
+  });
+  $('mc-foto-twitch').addEventListener('click',function(){
+    botoesFoto(false);msgFoto('');
+    sb.rpc('trocar_foto',{p_url:null}).then(function(r){
+      if(r.error)throw r.error;mostrarFoto(r.data||'');msgFoto('Voltou a foto da Twitch.','ok');
+    }).catch(function(){msgFoto('Não deu agora. Tente de novo.','erro')}).finally(function(){botoesFoto(true)});
+  });
+
+  // ===== resgatar Rubini Coins =====
+  var janela=$('resgate-janela'),rjErro=$('rj-erro'),rjPers=$('rj-personagem'),rjQtd=$('rj-qtd'),rjEnviar=$('rj-enviar');
+  function abrirResgate(){
+    rjErro.textContent='';$('rj-pedido').hidden=false;$('rj-ok').hidden=true;
+    $('rj-saldo').textContent=fmt(saldoRubini);rjQtd.max=saldoRubini;rjQtd.value=saldoRubini>0?saldoRubini:'';
+    try{rjPers.value=localStorage.getItem('bnh-personagem')||''}catch(e){}
+    if(saldoRubini<1)rjErro.textContent='Você ainda não tem Rubini Coins pra resgatar.';
+    rjEnviar.disabled=saldoRubini<1;
+    if(janela.showModal)janela.showModal();else janela.setAttribute('open','');
+    setTimeout(function(){(rjPers.value?rjQtd:rjPers).focus()},30);
+  }
+  function fecharResgate(){if(janela.close)janela.close();else janela.removeAttribute('open')}
+  $('mc-resgatar').addEventListener('click',abrirResgate);
+  $('rj-cancelar').addEventListener('click',fecharResgate);
+  $('rj-fechar').addEventListener('click',fecharResgate);
+  janela.addEventListener('click',function(e){if(e.target===janela)fecharResgate()});
+  var ERROS={'Saldo insuficiente':'Você não tem Rubini Coins suficientes.','Nome de personagem inválido':'Confira o nome do personagem (só letras e espaços, de 2 a 30).','Quantidade inválida':'Escolha uma quantidade a partir de 1.'};
+  $('rj-form').addEventListener('submit',function(e){
+    e.preventDefault();rjErro.textContent='';
+    var nome=rjPers.value.replace(/\s+/g,' ').trim(),q=Number(rjQtd.value);
+    if(!/^[A-Za-z][A-Za-z' -]{1,29}$/.test(nome)){rjErro.textContent=ERROS['Nome de personagem inválido'];rjPers.focus();return}
+    if(!Number.isInteger(q)||q<1){rjErro.textContent=ERROS['Quantidade inválida'];rjQtd.focus();return}
+    if(q>saldoRubini){rjErro.textContent='Você só tem '+fmt(saldoRubini)+' Rubini Coins.';rjQtd.focus();return}
+    rjEnviar.disabled=true;rjEnviar.textContent='Enviando…';
+    sb.rpc('pedir_resgate',{p_personagem:nome,p_quantidade:q}).then(function(r){
+      if(r.error){var m=r.error.message||'';rjErro.textContent=ERROS[m]||'Não deu pra enviar agora. Tente de novo.';return}
+      try{localStorage.setItem('bnh-personagem',nome)}catch(e){}
+      saldoRubini=Number(r.data)||0;$('mc-rubini').textContent=fmt(saldoRubini);
+      $('rj-ok-txt').textContent=fmt(q)+' Rubini Coins para '+nome+'. O BNH vai mandar no jogo, é só aguardar.';
+      $('rj-pedido').hidden=true;$('rj-ok').hidden=false;
+      sb.from('extrato').select('moeda,quantidade,motivo,criado_em').order('criado_em',{ascending:false}).limit(20).then(function(x){if(x.data)extrato(x.data)});
+    }).finally(function(){rjEnviar.disabled=false;rjEnviar.textContent='Pedir resgate'});
+  });
+
+  // ===== página do admin: pedidos de resgate =====
+  var pedidos=[],filtro='pendente';
+  var ST={pendente:'Pendente',pago:'Pago',recusado:'Recusado'};
+  function dataHora(d){return new Date(d).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+  function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
+  function desenharAdmin(){
+    var pend=pedidos.filter(function(p){return p.status==='pendente'});
+    $('ad-n-pend').textContent=fmt(pend.length);
+    $('ad-q-pend').textContent=fmt(pend.reduce(function(a,p){return a+p.quantidade},0));
+    $('ad-q-pago').textContent=fmt(pedidos.filter(function(p){return p.status==='pago'}).reduce(function(a,p){return a+p.quantidade},0));
+    var ul=$('ad-lista');ul.textContent='';
+    var lista=pedidos.filter(function(p){return filtro==='todos'||p.status===filtro});
+    if(!lista.length){ul.appendChild(el('li','vazio',filtro==='pendente'?'Nenhum pedido esperando. Tudo em dia!':'Nada por aqui.'));return}
+    lista.forEach(function(p){
+      var li=el('li'),esq=el('div'),pers=el('span','ad-pers',p.personagem),cp=el('button','mc-link','Copiar');
+      cp.type='button';cp.addEventListener('click',function(){navigator.clipboard&&navigator.clipboard.writeText(p.personagem).then(function(){cp.textContent='Copiado!';setTimeout(function(){cp.textContent='Copiar'},1500)})});
+      pers.appendChild(cp);esq.appendChild(pers);
+      esq.appendChild(el('span','ad-info','Twitch: '+(p.twitch_login||p.nome||'?')+' · pedido em '+dataHora(p.criado_em)+(p.resolvido_em?' · resolvido em '+dataHora(p.resolvido_em):'')));
+      var qtd=el('div','ad-qtd',fmt(p.quantidade));qtd.appendChild(el('small',null,'Rubini Coins'));
+      var acoes=el('div','ad-acoes');acoes.appendChild(el('span','st st-'+p.status,ST[p.status]||p.status));
+      if(p.status==='pendente'){
+        var pago=el('button','btn btn-verde','Marcar como pago'),rec=el('button','btn btn-vermelho','Recusar');
+        pago.type=rec.type='button';
+        pago.addEventListener('click',function(){marcar(p,'pago',[pago,rec])});
+        rec.addEventListener('click',function(){
+          if(rec.dataset.certeza!=='1'){rec.dataset.certeza='1';rec.textContent='Confirmar recusa (devolve as moedas)';return}
+          marcar(p,'recusado',[pago,rec]);
+        });
+        acoes.appendChild(pago);acoes.appendChild(rec);
+      }
+      li.appendChild(esq);li.appendChild(qtd);li.appendChild(acoes);ul.appendChild(li);
+    });
+  }
+  function marcar(p,status,bts){
+    bts.forEach(function(b){b.disabled=true});
+    sb.rpc('marcar_resgate',{p_id:p.id,p_status:status}).then(function(r){
+      if(r.error){bts.forEach(function(b){b.disabled=false});alertaAdmin(r.error.message==='Esse pedido já foi resolvido'?'Esse pedido já tinha sido resolvido.':'Não deu pra salvar. Tente de novo.');carregarPedidos();return}
+      p.status=status;p.resolvido_em=new Date().toISOString();desenharAdmin();
+    });
+  }
+  function alertaAdmin(t){var a=$('ad-aviso');a.textContent=t;a.hidden=false;setTimeout(function(){a.hidden=true},4000)}
+  function carregarPedidos(){
+    sb.from('resgates').select('id,twitch_login,nome,personagem,quantidade,status,criado_em,resolvido_em').order('criado_em',{ascending:false}).limit(500).then(function(r){
+      if(r.error){$('ad-aviso').textContent='Não deu pra carregar os pedidos. Atualize a página.';$('ad-aviso').hidden=false;return}
+      pedidos=r.data||[];$('ad-aviso').hidden=true;$('ad-painel').hidden=false;desenharAdmin();
+    });
+  }
+  function abrirAdmin(){
+    if(!usuario){$('ad-aviso').textContent='Entre com a conta da Twitch do BNH pra ver os pedidos.';$('ad-aviso').hidden=false;$('ad-painel').hidden=true;return}
+    if(!admin){$('ad-aviso').textContent='Esta página é só do BNH.';$('ad-aviso').hidden=false;$('ad-painel').hidden=true;return}
+    carregarPedidos();
+  }
+  window.bnhAbrirAdmin=function(){if(usuario)abrirAdmin()};
+  [].forEach.call(document.querySelectorAll('[data-filtro]'),function(b){
+    b.addEventListener('click',function(){
+      filtro=b.dataset.filtro;
+      [].forEach.call(document.querySelectorAll('[data-filtro]'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+      desenharAdmin();
+    });
+  });
+  $('ad-atualizar').addEventListener('click',carregarPedidos);
 
   sb.auth.onAuthStateChange(function(evento,sessao){
     setTimeout(function(){
