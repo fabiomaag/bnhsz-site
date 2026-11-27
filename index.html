@@ -665,7 +665,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           <div class="mm-pop" id="mm-pop"><header><span id="mm-pop-tit">Monstros aqui</span><button type="button" id="mm-pop-x" aria-label="Fechar">&times;</button></header><div class="mm-lista" id="mm-pop-lista"></div></div>
         </div>
         <p class="mm-dica">Os monstros aparecem no mapa quando você dá zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
-        <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens: TibiaWiki.</p>
+        <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens dos monstros: TibiaWiki.</p>
       </div>
     </div>
   </div>
@@ -1019,8 +1019,8 @@ body.pagina-extra main>section.pagina.ativa{display:block}
   function nomeAndar(z){return z===7?'Térreo':(z<7?'+'+(7-z):'−'+(z-7))}
   function descAndar(z){return z===7?'térreo':(z<7?(7-z)+' acima do térreo':(z-7)+' abaixo do térreo')}
   function fmt(n){return n.toLocaleString('pt-BR')}
-  function gifUrl(n){var p=dados&&dados.i[n];if(!p)return '';var f=n.replace(/ /g,'_');f=f.charAt(0).toUpperCase()+f.slice(1);return 'https://www.tibiawiki.com.br/images/'+p+'/'+encodeURIComponent(f).replace(/%27/g,"'")+'.gif'}
-  function gifHtml(n){var u=gifUrl(n);return '<span class="mm-gif">'+(u?'<img src="'+u+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.outerHTML=\'<i></i>\'">':'<i></i>')+'</span>'}
+  function gifUrl(n){var f=dados&&dados.i[n];return f?'mapa/sprites/'+encodeURIComponent(f):''}
+  function gifHtml(n){var u=gifUrl(n);return '<span class="mm-gif">'+(u?'<img src="'+u+'" alt="" loading="lazy" onerror="this.outerHTML=\'<i></i>\'">':'<i></i>')+'</span>'}
   function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   function total(n){return dados.m[n].reduce(function(s,a){return s+a[3]},0)}
 
@@ -1070,14 +1070,14 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           ctx.fillStyle=destaque?'rgba(193,60,255,.22)':'rgba(193,60,255,.12)';ctx.fillRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);
           ctx.strokeStyle=destaque?'#e7a6ff':'rgba(193,60,255,.75)';ctx.lineWidth=destaque?2:1;ctx.setLineDash([5,4]);
           ctx.strokeRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);ctx.setLineDash([]);
-          if(escala>=2)cadaMonstro(sel,a,Math.max(26,Math.min(60,escala*2.6)),true);
-          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(sel,c[0],c[1],34,a[3],true)}
+          if(escala>=2)cadaMonstro(sel,a,Math.max(32,Math.min(64,escala*3)),true);
+          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(sel,c[0],c[1],44,a[3],true)}
         });
       }else if(escala>=1.5){
         (porAndar[andar]||[]).forEach(function(r){
           var a=r[1];if(!visivel(a))return;
-          if(escala>=6)cadaMonstro(r[0],a,Math.max(24,Math.min(52,escala*2.4)),false);
-          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(r[0],c[0],c[1],escala>=3?30:24,a[3],false)}
+          if(escala>=6)cadaMonstro(r[0],a,Math.max(32,Math.min(60,escala*3)),false);
+          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(r[0],c[0],c[1],escala>=3?44:36,a[3],false)}
         });
       }
       ctx.restore();
@@ -1101,7 +1101,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
   var sprs={},porAndar={};
   function spr(n){
     if(sprs[n])return sprs[n];
-    var im=new Image();im.referrerPolicy='no-referrer';im.decoding='async';
+    var im=new Image();im.decoding='async';
     var u=gifUrl(n);im.onload=function(){desenhar()};im.onerror=function(){im.falhou=true;desenhar()};
     if(u)im.src=u;else im.falhou=true;
     sprs[n]=im;return im;
