@@ -662,7 +662,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           <div class="mm-info" id="mm-info"></div>
           <div class="mm-pop" id="mm-pop"><header><span id="mm-pop-tit">Monstros aqui</span><button type="button" id="mm-pop-x" aria-label="Fechar">&times;</button></header><div class="mm-lista" id="mm-pop-lista"></div></div>
         </div>
-        <p class="mm-dica">Sem nenhum monstro pesquisado, os monstros aparecem a partir do zoom 4. O monstro pesquisado aparece em qualquer zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
+        <p class="mm-dica">Sem nenhum monstro pesquisado, os monstros aparecem a partir do zoom 5 (juntos) e vão se separando até o zoom 8, onde aparecem todos. O monstro pesquisado aparece em qualquer zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
         <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens dos monstros: TibiaWiki.</p>
       </div>
     </div>
@@ -1011,8 +1011,8 @@ body.pagina-extra main>section.pagina.ativa{display:block}
   var pop=$('mm-pop'),popLista=$('mm-pop-lista'),popTit=$('mm-pop-tit'),carregando=$('mm-carregando');
   var dados=null,nomes=[],iniciado=false;
   var andar=7,escala=0.25*Math.pow(1.5,3),cx=32369,cy=32241; // começa em Thais
-  // zoom em níveis: 0 (mais longe) até 10 (mais perto); os monstros aparecem a partir do 4
-  var ZMAX=10,ZMONSTROS=4;
+  // zoom em níveis: 0 (mais longe) até 10 (mais perto); os monstros aparecem a partir do 5
+  var ZMAX=10,ZMONSTROS=5;
   function nivelEscala(n){return 0.25*Math.pow(1.5,n)}
   function nivelAtual(){return Math.round(Math.log(escala/0.25)/Math.log(1.5))}
   function mostraMonstros(){return escala>=nivelEscala(ZMONSTROS)*0.98}
@@ -1065,15 +1065,22 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       ctx.save();
       var vx0=telaParaMapa(-60,-60),vx1=telaParaMapa(larg+60,alt+60);
       var visivel=function(a){return !(a[6]<vx0[0]||a[4]>vx1[0]||a[7]<vx0[1]||a[5]>vx1[1])};
-      var T=tamSprite(),vistos=[],ocupado={},cel=T*.7,mostrar=mostraMonstros();
-      // cada monstro na posição dele; se já tem um igual muito perto na tela, pula (dar mais zoom mostra mais)
+      var T=tamSprite(),vistos=[],ocupado={},mostrar=mostraMonstros(),nz=nivelAtual();
+      // zoom 5 ou menos: cada grupo de monstros vira um só; 6 e 7: vão se separando; 8 ou mais: todos
+      var grade=nz>=8?0:(nz===7?5:(nz===6?12:-1));
+      var porNa=function(n,x,y,destaque){
+        var t=mapaParaTela(x,y);
+        if(t[0]<-T||t[1]<-T||t[0]>larg+T||t[1]>alt+T)return;
+        vistos.push([n,t[0],t[1],destaque]);
+      };
       var cadaUm=function(n,a,destaque){
-        var f=a[8];
+        if(grade<0){porNa(n,a[0]+.5,a[1]+.5,destaque);return}
+        var f=a[8],g={};
         for(var k=0;k<f.length;k+=2){
-          var t=mapaParaTela(a[4]+f[k]+.5,a[5]+f[k+1]+.5);
-          if(t[0]<-T||t[1]<-T||t[0]>larg+T||t[1]>alt+T)continue;
-          var ch=n+'|'+Math.floor(t[0]/cel)+'|'+Math.floor(t[1]/cel);
-          if(ocupado[ch])continue;ocupado[ch]=1;vistos.push([n,t[0],t[1],destaque]);
+          var x=a[4]+f[k],y=a[5]+f[k+1];
+          if(!grade){porNa(n,x+.5,y+.5,destaque);continue}
+          var ch=n+'|'+a[2]+'|'+Math.floor(x/grade)+'|'+Math.floor(y/grade);
+          if(ocupado[ch])continue;ocupado[ch]=1;porNa(n,x+.5,y+.5,destaque);
         }
       };
       if(sel&&dados.m[sel]){
