@@ -662,7 +662,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           <div class="mm-info" id="mm-info"></div>
           <div class="mm-pop" id="mm-pop"><header><span id="mm-pop-tit">Monstros aqui</span><button type="button" id="mm-pop-x" aria-label="Fechar">&times;</button></header><div class="mm-lista" id="mm-pop-lista"></div></div>
         </div>
-        <p class="mm-dica">Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
+        <p class="mm-dica">Os monstros aparecem a partir do zoom 7. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
         <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens dos monstros: TibiaWiki.</p>
       </div>
     </div>
@@ -1010,7 +1010,12 @@ body.pagina-extra main>section.pagina.ativa{display:block}
   var lista=$('mm-lista'),busca=$('mm-busca'),ficha=$('mm-ficha'),andaresEl=$('mm-andares'),info=$('mm-info');
   var pop=$('mm-pop'),popLista=$('mm-pop-lista'),popTit=$('mm-pop-tit'),carregando=$('mm-carregando');
   var dados=null,nomes=[],iniciado=false;
-  var andar=7,escala=1,cx=32369,cy=32241; // começa em Thais
+  var andar=7,escala=0.25*Math.pow(1.5,4),cx=32369,cy=32241; // começa em Thais
+  // zoom em níveis: 0 (mais longe) até 10 (mais perto); os monstros aparecem a partir do 7
+  var ZMAX=10,ZMONSTROS=7;
+  function nivelEscala(n){return 0.25*Math.pow(1.5,n)}
+  function nivelAtual(){return Math.round(Math.log(escala/0.25)/Math.log(1.5))}
+  function mostraMonstros(){return escala>=nivelEscala(ZMONSTROS)*0.98}
   var sel=null,areaSel=-1,imgs={},mira=null;
   var dpr=1,larg=0,alt=0;
 
@@ -1038,7 +1043,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
     larg=r.width;alt=r.height;cv.width=Math.round(larg*dpr);cv.height=Math.round(alt*dpr);
   }
   function limitar(){
-    escala=Math.max(0.25,Math.min(16,escala));
+    escala=Math.max(0.25,Math.min(nivelEscala(ZMAX),escala));
     cx=Math.max(X0,Math.min(X0+W,cx));cy=Math.max(Y0,Math.min(Y0+H,cy));
   }
   function telaParaMapa(px,py){return [cx+(px-larg/2)/escala,cy+(py-alt/2)/escala]}
@@ -1060,11 +1065,16 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       ctx.save();
       var vx0=telaParaMapa(-60,-60),vx1=telaParaMapa(larg+60,alt+60);
       var visivel=function(a){return !(a[6]<vx0[0]||a[4]>vx1[0]||a[7]<vx0[1]||a[5]>vx1[1])};
-      var T=tamSprite(),vistos={},cel=Math.max(6,T*.45);
-      var umPorLugar=function(n,a,destaque){
-        var c=mapaParaTela(a[0]+.5,a[1]+.5),k=n+'|'+Math.round(c[0]/cel)+'|'+Math.round(c[1]/cel);
-        if(vistos[k]){vistos[k].q+=a[3];return}
-        vistos[k]={n:n,x:c[0],y:c[1],q:a[3],d:destaque};
+      var T=tamSprite(),vistos=[],ocupado={},cel=T*.7,mostrar=mostraMonstros();
+      // cada monstro na posição dele; se já tem um igual muito perto na tela, pula (dar mais zoom mostra mais)
+      var cadaUm=function(n,a,destaque){
+        var f=a[8];
+        for(var k=0;k<f.length;k+=2){
+          var t=mapaParaTela(a[4]+f[k]+.5,a[5]+f[k+1]+.5);
+          if(t[0]<-T||t[1]<-T||t[0]>larg+T||t[1]>alt+T)continue;
+          var ch=n+'|'+Math.floor(t[0]/cel)+'|'+Math.floor(t[1]/cel);
+          if(ocupado[ch])continue;ocupado[ch]=1;vistos.push([n,t[0],t[1],destaque]);
+        }
       };
       if(sel&&dados.m[sel]){
         dados.m[sel].forEach(function(a,i){
@@ -1074,15 +1084,12 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           ctx.fillStyle=destaque?'rgba(193,60,255,.22)':'rgba(193,60,255,.12)';ctx.fillRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);
           ctx.strokeStyle=destaque?'#e7a6ff':'rgba(193,60,255,.75)';ctx.lineWidth=destaque?2:1;ctx.setLineDash([5,4]);
           ctx.strokeRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);ctx.setLineDash([]);
-          if(escala>=2)cadaMonstro(sel,a,T,true);else umPorLugar(sel,a,destaque||true);
+          if(mostrar)cadaUm(sel,a,true);
         });
-      }else{
-        (porAndar[andar]||[]).forEach(function(r){
-          var a=r[1];if(!visivel(a))return;
-          if(escala>=6)cadaMonstro(r[0],a,T,false);else umPorLugar(r[0],a,false);
-        });
+      }else if(mostrar){
+        (porAndar[andar]||[]).forEach(function(r){var a=r[1];if(visivel(a))cadaUm(r[0],a,false)});
       }
-      Object.keys(vistos).map(function(k){return vistos[k]}).sort(function(a,b){return a.q-b.q}).forEach(function(v){sprite(v.n,v.x,v.y,T,v.q,v.d)});
+      vistos.sort(function(a,b){return a[2]-b[2]}).forEach(function(v){sprite(v[0],v[1],v[2],T,0,v[3])});
       ctx.restore();
     }
     if(mira&&mira[2]===andar){
@@ -1097,6 +1104,8 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       var n=0;dados.m[sel].forEach(function(a){if(a[2]===andar)n+=a[3]});
       h+='<span><b>'+esc(sel)+'</b>: '+(n?fmt(n)+' neste andar':'nenhum neste andar')+'</span>';
     }
+    var nz=nivelAtual();h+='<span>Zoom: <b>'+nz+'</b> de '+ZMAX+'</span>';
+    if(dados&&nz<ZMONSTROS)h+='<span>Dê zoom até o '+ZMONSTROS+' pra ver os monstros</span>';
     info.innerHTML=h;
   }
 
@@ -1199,7 +1208,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       andar=a[2];imgAndar(andar);
       cx=(a[4]+a[6]+1)/2;cy=(a[5]+a[7]+1)/2;
       var bw=a[6]-a[4]+12,bh=a[7]-a[5]+12;
-      escala=Math.min(larg/bw,alt/bh,6);if(escala<1.5)escala=Math.max(1.5,Math.min(larg/bw,alt/bh));
+      escala=nivelEscala(ZMONSTROS);
       limitar();montarAndares();
     }
     desenhar();
@@ -1241,10 +1250,11 @@ body.pagina-extra main>section.pagina.ativa{display:block}
   // ---------- arrastar, zoom e toque ----------
   var toques={},arrasto=null,pinca=null,moveu=false;
   function zoomEm(fator,px,py){
-    var antes=telaParaMapa(px,py);escala*=fator;limitar();
+    var antes=telaParaMapa(px,py);
+    var n=nivelAtual()+(fator>1?1:-1);escala=nivelEscala(Math.max(0,Math.min(ZMAX,n)));limitar();
     var depois=telaParaMapa(px,py);cx+=antes[0]-depois[0];cy+=antes[1]-depois[1];limitar();desenhar();
   }
-  cv.addEventListener('wheel',function(e){e.preventDefault();var r=cv.getBoundingClientRect();zoomEm(e.deltaY<0?1.25:0.8,e.clientX-r.left,e.clientY-r.top)},{passive:false});
+  cv.addEventListener('wheel',function(e){e.preventDefault();var r=cv.getBoundingClientRect();zoomEm(e.deltaY<0?1.5:1/1.5,e.clientX-r.left,e.clientY-r.top)},{passive:false});
   cv.addEventListener('pointerdown',function(e){
     cv.setPointerCapture(e.pointerId);var r=cv.getBoundingClientRect();
     toques[e.pointerId]=[e.clientX-r.left,e.clientY-r.top];
