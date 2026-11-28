@@ -487,7 +487,6 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       <h3 class="mc-sub">Extrato</h3>
       <ul class="mc-extrato" id="mc-extrato"><li class="vazio">Nada por aqui ainda. Quando as recompensas começarem, tudo que você ganhar e gastar aparece nesta lista.</li></ul>
       <p class="mc-futuro"><span class="tag">Em breve</span>Loja, sorteios e outras coisas da sua conta vão aparecer aqui.</p>
-      <p style="margin-bottom:18px"><a class="btn btn-verde" href="#admin-resgates" id="mc-admin" hidden>Pedidos de resgate (admin)</a></p>
       <button class="btn btn-linha" type="button" id="mc-sair">Sair da conta</button>
     </div>
   </div>
@@ -796,7 +795,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
   $('sair').addEventListener('click',sair);$('mc-sair').addEventListener('click',sair);
 
   function mostrarDeslogado(){
-    dentro.hidden=true;fora.hidden=false;mcDentro.hidden=true;mcFora.hidden=false;usuario=null;$('mc-foto-msg').textContent='';admin=false;$('lat-admin').hidden=true;$('mc-admin').hidden=true;$('ad-aviso').textContent='Entre com a conta da Twitch do BNH pra ver os pedidos.';$('ad-aviso').hidden=false;$('ad-painel').hidden=true;
+    dentro.hidden=true;fora.hidden=false;mcDentro.hidden=true;mcFora.hidden=false;usuario=null;$('mc-foto-msg').textContent='';admin=false;$('lat-admin').hidden=true;$('ad-aviso').textContent='Entre com a conta da Twitch do BNH pra ver os pedidos.';$('ad-aviso').hidden=false;$('ad-painel').hidden=true;
     botoesEntrar.forEach(function(b){b.disabled=false});
   }
 
@@ -841,7 +840,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       if(r.data){var p=r.data;preencher(p.nome||$('mc-nome').textContent,p.twitch_login||md.name||'',p.foto_url||md.avatar_url||'',p.points,p.rubini_coins)}
     });
     sb.rpc('sou_admin').then(function(r){
-      admin=r.data===true;$('lat-admin').hidden=!admin;$('mc-admin').hidden=!admin;
+      admin=r.data===true;$('lat-admin').hidden=!admin;
       if(location.hash==='#admin-resgates')abrirAdmin();
     });
     sb.from('extrato').select('moeda,quantidade,motivo,criado_em').order('criado_em',{ascending:false}).limit(20).then(function(r){if(r.data)extrato(r.data)});
