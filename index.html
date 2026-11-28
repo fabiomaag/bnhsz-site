@@ -662,7 +662,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           <div class="mm-info" id="mm-info"></div>
           <div class="mm-pop" id="mm-pop"><header><span id="mm-pop-tit">Monstros aqui</span><button type="button" id="mm-pop-x" aria-label="Fechar">&times;</button></header><div class="mm-lista" id="mm-pop-lista"></div></div>
         </div>
-        <p class="mm-dica">Os monstros aparecem a partir do zoom 7. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
+        <p class="mm-dica">Sem nenhum monstro pesquisado, os monstros aparecem a partir do zoom 7. O monstro pesquisado aparece em qualquer zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
         <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens dos monstros: TibiaWiki.</p>
       </div>
     </div>
@@ -1084,7 +1084,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           ctx.fillStyle=destaque?'rgba(193,60,255,.22)':'rgba(193,60,255,.12)';ctx.fillRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);
           ctx.strokeStyle=destaque?'#e7a6ff':'rgba(193,60,255,.75)';ctx.lineWidth=destaque?2:1;ctx.setLineDash([5,4]);
           ctx.strokeRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);ctx.setLineDash([]);
-          if(mostrar)cadaUm(sel,a,true);
+          cadaUm(sel,a,true); // o monstro pesquisado aparece em qualquer zoom
         });
       }else if(mostrar){
         (porAndar[andar]||[]).forEach(function(r){var a=r[1];if(visivel(a))cadaUm(r[0],a,false)});
@@ -1105,7 +1105,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       h+='<span><b>'+esc(sel)+'</b>: '+(n?fmt(n)+' neste andar':'nenhum neste andar')+'</span>';
     }
     var nz=nivelAtual();h+='<span>Zoom: <b>'+nz+'</b> de '+ZMAX+'</span>';
-    if(dados&&nz<ZMONSTROS)h+='<span>Dê zoom até o '+ZMONSTROS+' pra ver os monstros</span>';
+    if(dados&&!sel&&nz<ZMONSTROS)h+='<span>Dê zoom até o '+ZMONSTROS+' pra ver os monstros</span>';
     info.innerHTML=h;
   }
 
