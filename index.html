@@ -662,7 +662,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           <div class="mm-info" id="mm-info"></div>
           <div class="mm-pop" id="mm-pop"><header><span id="mm-pop-tit">Monstros aqui</span><button type="button" id="mm-pop-x" aria-label="Fechar">&times;</button></header><div class="mm-lista" id="mm-pop-lista"></div></div>
         </div>
-        <p class="mm-dica">Os monstros aparecem no mapa quando você dá zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
+        <p class="mm-dica">Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
         <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens dos monstros: TibiaWiki.</p>
       </div>
     </div>
@@ -1060,6 +1060,12 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       ctx.save();
       var vx0=telaParaMapa(-60,-60),vx1=telaParaMapa(larg+60,alt+60);
       var visivel=function(a){return !(a[6]<vx0[0]||a[4]>vx1[0]||a[7]<vx0[1]||a[5]>vx1[1])};
+      var T=tamSprite(),vistos={},cel=Math.max(6,T*.45);
+      var umPorLugar=function(n,a,destaque){
+        var c=mapaParaTela(a[0]+.5,a[1]+.5),k=n+'|'+Math.round(c[0]/cel)+'|'+Math.round(c[1]/cel);
+        if(vistos[k]){vistos[k].q+=a[3];return}
+        vistos[k]={n:n,x:c[0],y:c[1],q:a[3],d:destaque};
+      };
       if(sel&&dados.m[sel]){
         dados.m[sel].forEach(function(a,i){
           if(a[2]!==andar||!visivel(a))return;
@@ -1068,16 +1074,15 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           ctx.fillStyle=destaque?'rgba(193,60,255,.22)':'rgba(193,60,255,.12)';ctx.fillRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);
           ctx.strokeStyle=destaque?'#e7a6ff':'rgba(193,60,255,.75)';ctx.lineWidth=destaque?2:1;ctx.setLineDash([5,4]);
           ctx.strokeRect(p1[0],p1[1],p2[0]-p1[0],p2[1]-p1[1]);ctx.setLineDash([]);
-          if(escala>=2)cadaMonstro(sel,a,Math.max(32,Math.min(64,escala*3)),true);
-          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(sel,c[0],c[1],44,a[3],true)}
+          if(escala>=2)cadaMonstro(sel,a,T,true);else umPorLugar(sel,a,destaque||true);
         });
-      }else if(escala>=1.5){
+      }else{
         (porAndar[andar]||[]).forEach(function(r){
           var a=r[1];if(!visivel(a))return;
-          if(escala>=6)cadaMonstro(r[0],a,Math.max(32,Math.min(60,escala*3)),false);
-          else{var c=mapaParaTela(a[0]+.5,a[1]+.5);sprite(r[0],c[0],c[1],escala>=3?44:36,a[3],false)}
+          if(escala>=6)cadaMonstro(r[0],a,T,false);else umPorLugar(r[0],a,false);
         });
       }
+      Object.keys(vistos).map(function(k){return vistos[k]}).sort(function(a,b){return a.q-b.q}).forEach(function(v){sprite(v.n,v.x,v.y,T,v.q,v.d)});
       ctx.restore();
     }
     if(mira&&mira[2]===andar){
@@ -1091,7 +1096,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
     if(sel){
       var n=0;dados.m[sel].forEach(function(a){if(a[2]===andar)n+=a[3]});
       h+='<span><b>'+esc(sel)+'</b>: '+(n?fmt(n)+' neste andar':'nenhum neste andar')+'</span>';
-    }else if(dados&&escala<1.5)h+='<span>Dê zoom pra ver os monstros</span>';
+    }
     info.innerHTML=h;
   }
 
@@ -1104,17 +1109,30 @@ body.pagina-extra main>section.pagina.ativa{display:block}
     if(u)im.src=u;else im.falhou=true;
     sprs[n]=im;return im;
   }
+  // todos os monstros com o mesmo tamanho (no máximo 36px), um pouco menores com o mapa bem afastado
+  function tamSprite(){return escala>=1?36:(escala>=0.5?30:24)}
+  // recorta a parte vazia em volta da sprite, pra todas ocuparem o mesmo espaço
+  function recorte(im){
+    if(im.rec)return im.rec;
+    var w=im.naturalWidth,h=im.naturalHeight,r=[0,0,w,h];
+    try{var c=document.createElement('canvas');c.width=w;c.height=h;var g=c.getContext('2d');g.drawImage(im,0,0);
+      var d=g.getImageData(0,0,w,h).data,x0=w,y0=h,x1=-1,y1=-1;
+      for(var y=0;y<h;y++)for(var x=0;x<w;x++)if(d[(y*w+x)*4+3]>20){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+      if(x1>=x0)r=[x0,y0,x1-x0+1,y1-y0+1];
+    }catch(e){}
+    return im.rec=r;
+  }
   function bolinha(x,y,r,cor){ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fillStyle=cor;ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle='#fff';ctx.stroke()}
   function sprite(n,x,y,tam,qtd,destaque){
     var im=spr(n),ok=im.complete&&im.naturalWidth&&!im.falhou;
     if(ok){
-      var f=Math.min(1.5,Math.max(1,im.naturalWidth/32)),w=tam*f,h=tam*f*im.naturalHeight/im.naturalWidth;
+      var rc=recorte(im),e=tam/Math.max(rc[2],rc[3]),w=rc[2]*e,h=rc[3]*e;
       if(destaque){ctx.save();ctx.shadowColor='rgba(193,60,255,.95)';ctx.shadowBlur=10}
       ctx.imageSmoothingEnabled=false;
-      ctx.drawImage(im,x-w/2,y-h/2,w,h);
+      ctx.drawImage(im,rc[0],rc[1],rc[2],rc[3],x-w/2,y-h/2,w,h);
       if(destaque)ctx.restore();
     }else bolinha(x,y,Math.max(5,tam/5),destaque?'#c13cff':'#8700ff');
-    if(qtd>1){
+    if(qtd>1&&escala>=1){
       var t=String(qtd);ctx.font='800 10.5px Montserrat,system-ui,sans-serif';
       var bw=Math.max(16,ctx.measureText(t).width+8),bx=x+tam*.32,by=y+tam*.28;
       ctx.fillStyle=destaque?'#c13cff':'#8700ff';ctx.fillRect(bx-bw/2,by-8,bw,16);
