@@ -1167,7 +1167,8 @@ body.pagina-extra main>section.pagina.ativa{display:block}
     lista.innerHTML=mostrar.map(function(n){return '<button type="button" role="listitem" data-nome="'+esc(n)+'">'+gifHtml(n)+'<span>'+esc(n)+'</span><small>'+fmt(total(n))+'</small></button>'}).join('')+
       (achados.length>mostrar.length?'<p class="mm-vazio">E mais '+(achados.length-mostrar.length)+'. Digite o nome pra achar.</p>':'');
   }
-  busca.addEventListener('input',montarLista);
+  // ao digitar outra busca, fecha a caixa do monstro escolhido antes
+  busca.addEventListener('input',function(){if(sel){sel=null;areaSel=-1;ficha.classList.remove('on');ficha.innerHTML='';montarAndares();desenhar()}montarLista()});
   busca.addEventListener('keydown',function(e){if(e.key==='Enter'){var b=lista.querySelector('button');if(b)escolher(b.dataset.nome)}});
   lista.addEventListener('click',function(e){var b=e.target.closest('button[data-nome]');if(b)escolher(b.dataset.nome)});
   popLista.addEventListener('click',function(e){var b=e.target.closest('button[data-nome]');if(b){fecharPop();escolher(b.dataset.nome,true)}});
