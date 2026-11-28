@@ -662,7 +662,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
           <div class="mm-info" id="mm-info"></div>
           <div class="mm-pop" id="mm-pop"><header><span id="mm-pop-tit">Monstros aqui</span><button type="button" id="mm-pop-x" aria-label="Fechar">&times;</button></header><div class="mm-lista" id="mm-pop-lista"></div></div>
         </div>
-        <p class="mm-dica">Sem nenhum monstro pesquisado, os monstros aparecem a partir do zoom 7. O monstro pesquisado aparece em qualquer zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
+        <p class="mm-dica">Sem nenhum monstro pesquisado, os monstros aparecem a partir do zoom 4. O monstro pesquisado aparece em qualquer zoom. Arraste pra mexer no mapa, use a rodinha do mouse (ou dois dedos no celular) pra dar zoom e troque o andar nos botões da direita. Clique em qualquer ponto do mapa pra ver os monstros que ficam ali perto.</p>
         <p class="mm-dica">Mapa: TibiaMaps.io. Locais dos monstros: dados abertos do projeto OpenTibiaBR (Canary). Imagens dos monstros: TibiaWiki.</p>
       </div>
     </div>
@@ -1010,9 +1010,9 @@ body.pagina-extra main>section.pagina.ativa{display:block}
   var lista=$('mm-lista'),busca=$('mm-busca'),ficha=$('mm-ficha'),andaresEl=$('mm-andares'),info=$('mm-info');
   var pop=$('mm-pop'),popLista=$('mm-pop-lista'),popTit=$('mm-pop-tit'),carregando=$('mm-carregando');
   var dados=null,nomes=[],iniciado=false;
-  var andar=7,escala=0.25*Math.pow(1.5,4),cx=32369,cy=32241; // começa em Thais
-  // zoom em níveis: 0 (mais longe) até 10 (mais perto); os monstros aparecem a partir do 7
-  var ZMAX=10,ZMONSTROS=7;
+  var andar=7,escala=0.25*Math.pow(1.5,3),cx=32369,cy=32241; // começa em Thais
+  // zoom em níveis: 0 (mais longe) até 10 (mais perto); os monstros aparecem a partir do 4
+  var ZMAX=10,ZMONSTROS=4;
   function nivelEscala(n){return 0.25*Math.pow(1.5,n)}
   function nivelAtual(){return Math.round(Math.log(escala/0.25)/Math.log(1.5))}
   function mostraMonstros(){return escala>=nivelEscala(ZMONSTROS)*0.98}
