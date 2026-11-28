@@ -378,7 +378,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
 .pvp-breve .tag{margin:0 0 12px}
 .pvp-breve p+p{margin-top:10px}
 @media (max-width:480px){.quatro .prov{width:38%;height:38%;margin-bottom:16px}.pvp-grade{grid-template-columns:1fr 1fr;gap:20px 14px}.pvp-nome{font-size:19px}}
-/* ===== Guias > PvE: Mapa de monstros ===== */
+/* ===== Guias > PvE: Mapa dos Monstros ===== */
 .pvp-quadro .prov-mapa{position:absolute;inset:0;margin:auto;width:46%;height:46%;fill:none;stroke:var(--roxo-claro);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.6}
 .mm{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:stretch}
 .mm-lado{display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -558,7 +558,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
       <p>Guias de Tibia feitos pelo BNH, com dados conferidos na TibiaWiki.</p></div>
     <div class="cards rev">
       <a class="card" href="#pvp"><div class="ico"><svg viewBox="0 0 24 24"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M9.5 17.5 21 6V3h-3L6.5 14.5M11 19l-6-6M8 16l-4 4M5 21l-2-2"/></svg></div><h3>PvP</h3><p>Presets para correr hunt, traps e tudo para não morrer (e matar) no PvP.</p><span class="tag">Abrir</span></a>
-      <a class="card" href="#pve"><div class="ico"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/></svg></div><h3>PvE</h3><p>Mapa de monstros: descubra onde achar cada criatura do Tibia.</p><span class="tag">Abrir</span></a>
+      <a class="card" href="#pve"><div class="ico"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/></svg></div><h3>PvE</h3><p>Mapa dos Monstros: descubra onde achar cada criatura do Tibia.</p><span class="tag">Abrir</span></a>
     </div>
   </div>
 </section>
@@ -640,14 +640,14 @@ body.pagina-extra main>section.pagina.ativa{display:block}
     <a class="voltar" href="#guias">Voltar para Guias</a>
     <div class="cabeca"><span class="script">Guias de</span><h2 class="titulo" id="pve-tit">PvE</h2><p>Escolha um assunto pra abrir o guia.</p></div>
     <div class="pvp-grade">
-      <a class="pvp-ico" href="#pve-mapa"><span class="pvp-quadro" data-mapa-monstros><svg class="prov-mapa" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg></span><span class="pvp-nome">Mapa de monstros</span></a>
+      <a class="pvp-ico" href="#pve-mapa"><span class="pvp-quadro" data-mapa-monstros><svg class="prov-mapa" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg></span><span class="pvp-nome">Mapa dos Monstros</span></a>
     </div>
   </div>
 </section>
 <section class="bloco pagina" id="pve-mapa" aria-labelledby="pve-mapa-tit">
   <div class="wrap">
     <a class="voltar" href="#pve">Voltar para PvE</a>
-    <div class="cabeca"><span class="script">Guia PvE</span><h2 class="titulo" id="pve-mapa-tit">Mapa de monstros</h2><p>Procure um monstro e veja no mapa onde ele aparece.</p></div>
+    <div class="cabeca"><span class="script">Guia PvE</span><h2 class="titulo" id="pve-mapa-tit">Mapa dos Monstros</h2><p>Procure um monstro e veja no mapa onde ele aparece.</p></div>
     <div class="mm">
       <div class="mm-lado">
         <label class="mm-busca"><span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Buscar monstro</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="mm-busca" type="search" placeholder="Buscar monstro (ex.: Dragon)" autocomplete="off" spellcheck="false"></label>
@@ -1003,7 +1003,7 @@ body.pagina-extra main>section.pagina.ativa{display:block}
 })();
 </script>
 <script>
-/* ===== Guias > PvE: Mapa de monstros ===== */
+/* ===== Guias > PvE: Mapa dos Monstros ===== */
 (function(){
   var X0=31744,Y0=30976,W=2560,H=2048;
   var $=function(id){return document.getElementById(id)};
